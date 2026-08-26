@@ -1,12 +1,9 @@
 import logging
 import sys
-from pathlib import Path
 
+from config.settings import LOG_DIR, LOG_FILE
 
-LOG_DIR = Path("logs")
 LOG_DIR.mkdir(parents=True, exist_ok=True)
-
-LOG_FILE = LOG_DIR / "jarvis.log"
 
 
 def setup_logging() -> None:
