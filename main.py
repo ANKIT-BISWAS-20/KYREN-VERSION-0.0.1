@@ -8,7 +8,7 @@ def main() -> None:
     setup_logging()
     logger = logging.getLogger(__name__)
     config = BrainConfig()
-    logger.info("%s (%s) application starting", config.assistant_name, config.assistant_full_name)
+    logger.info("%s starting", config.assistant_name)
     # Application startup logic here
 
 
