@@ -1,12 +1,14 @@
 import logging
 
+from config.settings import BrainConfig
 from core.logging import setup_logging
 
 
 def main() -> None:
     setup_logging()
     logger = logging.getLogger(__name__)
-    logger.info("Jarvis application starting")
+    config = BrainConfig()
+    logger.info("%s starting", config.assistant_name)
     # Application startup logic here
 
 

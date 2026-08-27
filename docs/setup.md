@@ -58,12 +58,11 @@ pip install -r requirements.txt
   confirm the current PyPI package name and import path against the repo
   README rather than trusting this document blindly.
 
-**openai** (reasoning)
-- Why: official SDK, handles retries/timeouts.
-- Source: https://github.com/openai/openai-python , docs at
-  https://platform.openai.com/docs/
-- Verify: `python -c "import openai; print(openai.__version__)"`
-- Common error: `AuthenticationError` → check `OPENAI_API_KEY` in `.env`.
+**google-genai** (reasoning)
+- Why: official Google Gen AI SDK for Gemini.
+- Source: https://github.com/googleapis/python-genai
+- Verify: `python -c "from google import genai; print('ok')"`
+- Common error: authentication failure → check `GEMINI_API_KEY` in `.env`.
 
 **kokoro** (local TTS)
 - Why: fast, good-quality local TTS with no cloud dependency.
@@ -86,7 +85,7 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Edit `.env` and set at minimum `OPENAI_API_KEY`. Never commit this file —
+Edit `.env` and set at minimum `GEMINI_API_KEY`. Never commit this file —
 it's already in `.gitignore`.
 
 ## 4. List audio devices and pick the right one
@@ -112,7 +111,7 @@ Expected output: `OK: received N samples ...` after speaking for ~3s.
 pytest tests/ -v
 ```
 
-## 7. Run Jarvis
+## 7. Run KYREN
 
 ```bash
 python main.py
