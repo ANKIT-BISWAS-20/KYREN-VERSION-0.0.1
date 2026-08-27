@@ -90,15 +90,15 @@ class GeminiBrain(Brain):
         except Exception as exc:
             raise BrainError(self._classify_error(exc)) from exc
 
-    @staticmethod
-    def _classify_error(exc: Exception) -> str:
+    def _classify_error(self, exc: Exception) -> str:
+        assistant_name = self._config.assistant_name
         name = type(exc).__name__
         if "Timeout" in name:
-            return "KYREN request timed out. Check your network connection."
+            return f"{assistant_name} request timed out. Check your network connection."
         if "Authentication" in name or "Permission" in name:
-            return "KYREN authentication failed. Check GEMINI_API_KEY in .env."
+            return f"{assistant_name} authentication failed. Check GEMINI_API_KEY in .env."
         if "ResourceExhausted" in name or "RateLimit" in name:
-            return "KYREN rate limit hit. Please wait a moment and try again."
+            return f"{assistant_name} rate limit hit. Please wait a moment and try again."
         if "Connection" in name:
-            return "Could not connect to KYREN. Check your network connection."
-        return f"KYREN error: {exc}"
+            return f"Could not connect to {assistant_name}. Check your network connection."
+        return f"{assistant_name} error: {exc}"
