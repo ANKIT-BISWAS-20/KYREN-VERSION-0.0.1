@@ -6,7 +6,7 @@ from core.logging import setup_logging
 def main() -> None:
     setup_logging()
     logger = logging.getLogger(__name__)
-    logger.info("Jarvis application starting")
+    logger.info("KYREN application starting")
     # Application startup logic here
 
 

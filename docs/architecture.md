@@ -3,7 +3,7 @@
 ## Diagram
 
 ```
-                         JARVIS
+                          KYREN
                            │
                      ┌─────┴─────┐
                      │  Pipeline │
@@ -13,7 +13,7 @@
         ↓                  ↓                  ↓
       INPUT              BRAIN              OUTPUT
         │                  │                  │
-   Microphone           OpenAI              TTS
+  Microphone           Gemini              TTS
         │                  │                  │
        VAD                 │               Kokoro
         │                  │                  │
@@ -41,14 +41,14 @@ rewrite of this I/O layer — see Section 39 of the master prompt and
 | `infrastructure/audio/speaker.py` | Real playback via `sounddevice`, decoupled from TTS. |
 | `infrastructure/vad/silero.py` | Real VAD via Silero, converts raw probabilities into speech-start/end transitions using configured timing thresholds. |
 | `infrastructure/stt/faster_whisper.py` | Real STT. Loads the model once in `__init__`, never per-call. |
-| `infrastructure/brain/openai.py` | Real reasoning via OpenAI SDK. Owns retry/timeout/error classification. |
+| `infrastructure/brain/gemini.py` | Real reasoning via Google Gen AI SDK. Owns retry/timeout/error classification. |
 | `infrastructure/tts/kokoro.py` | Real speech synthesis via Kokoro. Loads the model once. |
 | `config/settings.py` | Single source of truth for every tunable constant. Nothing elsewhere hardcodes `"base"`, `"cpu"`, `"int8"`, `16000`, etc. |
 
 ## Why interfaces (Principles 1 & 2)
 
 `core/pipeline.py` depends only on `core/interfaces/*`. It never imports
-`WhisperModel`, `OpenAI(...)`, or `KPipeline` directly. This means:
+`WhisperModel`, `genai.Client(...)`, or `KPipeline` directly. This means:
 
 - Tests run against `core/fakes.py` implementations — no microphone,
   no API key, no GPU/CPU-heavy model loads, and they run in milliseconds.
@@ -64,7 +64,7 @@ rewrite of this I/O layer — see Section 39 of the master prompt and
 2. `SileroVAD.process(chunk)` → `VADResult` (is_speech, speech_started, speech_ended)
 3. `UtteranceBuffer.add(chunk, vad_result)` → `None` until an utterance completes, then `AudioBuffer`
 4. `FasterWhisperSTT.transcribe(buffer)` → `TranscriptionResult`
-5. `OpenAIBrain.generate(history)` → `BrainResponse`
+5. `GeminiBrain.generate(history)` → `BrainResponse`
 6. `KokoroTTS.synthesize(response.text)` → `AudioData`
 7. `Speaker.play(audio_data)` → sound out
 
